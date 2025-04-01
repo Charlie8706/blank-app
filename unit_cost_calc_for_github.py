@@ -76,6 +76,7 @@ if st.button("단가 계산하기"):
     # 품목 정보 저장
     st.session_state.product_list.append({
         "품목명": product_name,
+        "이윤 적용후 단가": final_cost,
         "최종단가": final_cost,
         **details
     })
@@ -92,6 +93,8 @@ with col1:
 
 if st.session_state.product_list:
     df = pd.DataFrame(st.session_state.product_list)
+    if "이윤 적용후 단가" not in df.columns:
+        df["이윤 적용후 단가"] = df["최종단가"]
     st.dataframe(df)
 
     def convert_df_to_csv(df):
@@ -107,3 +110,4 @@ if st.session_state.product_list:
         file_name="단가산출_리스트.csv",
         mime="text/csv"
     )
+
