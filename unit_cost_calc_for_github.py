@@ -95,8 +95,6 @@ if st.session_state.product_list:
     df = pd.DataFrame(st.session_state.product_list)
     if "이윤 적용후 단가" not in df.columns:
         df["이윤 적용후 단가"] = df["최종단가"]
-        if "이윤 적용후 단가" not in df.columns:
-        df["이윤 적용후 단가"] = df["최종단가"]
     cols = [col for col in df.columns if col != "이윤 적용후 단가"] + ["이윤 적용후 단가"]
     df = df[cols]
     st.dataframe(df)
