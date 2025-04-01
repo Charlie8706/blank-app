@@ -22,7 +22,11 @@ def calculate_unit_cost(
     general_admin_rate, interest_rate, profit_margin
 ):
     raw_material_cost = round(purchase_price / (yield_rate / 100))
-    packaging_cost = round(film_price + box_price / box_quantity)
+    pack_unit_kg = pack_unit / 1000
+    box_weight_kg = (pack_unit * box_quantity) / 1000
+    film_cost_per_kg = film_price / pack_unit_kg
+    box_cost_per_kg = box_price / box_weight_kg
+    packaging_cost = round(film_cost_per_kg + box_cost_per_kg)
     total_labor_cost = labor_cost_per_person * total_personnel
     labor_cost_per_kg = round(total_labor_cost / 1000)
     indirect_cost = round((raw_material_cost + packaging_cost + labor_cost_per_kg) * (
@@ -32,7 +36,7 @@ def calculate_unit_cost(
     final_unit_cost = round(total_cost * (1 + profit_margin / 100))
     return final_unit_cost, {
         "원재료비": raw_material_cost,
-        "포장재비": packaging_cost,
+        "부자재 환산": packaging_cost,
         "인건비": labor_cost_per_kg,
         "간접비": indirect_cost,
         "이윤 적용 전 원가": total_cost
@@ -112,3 +116,4 @@ if st.session_state.product_list:
         file_name="단가산출_리스트.csv",
         mime="text/csv"
     )
+
